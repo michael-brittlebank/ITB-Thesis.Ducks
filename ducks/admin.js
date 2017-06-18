@@ -1,5 +1,4 @@
 import axios from 'axios';
-import store from '../../store';
 
 import requestService from '../services/request';
 
@@ -52,7 +51,7 @@ export default (state = initialState, action) => {
 }
 
 export const actions = {
-    getUsers: function(page, limit){
+    getUsers: function(store, page, limit){
         if(!limit){
             limit = 10;
         }
@@ -60,7 +59,7 @@ export const actions = {
             dispatch({type:types.USERS_REQUEST});
             return axios({
                 method: 'GET',
-                url: requestService.getApiUrl()+'/admin/users/'+page+'/'+limit,
+                url: requestService.getApiUrl(store)+'/admin/users/'+page+'/'+limit,
                 headers: requestService.getSessionHeaders(store)
             })
                 .then((response) => {

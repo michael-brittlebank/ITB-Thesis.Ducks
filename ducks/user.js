@@ -1,5 +1,4 @@
 import axios from 'axios';
-import store from '../../store';
 
 import requestService from '../services/request';
 
@@ -86,17 +85,17 @@ export default (state = initialState, action) => {
 }
 
 export const actions = {
-    getProfile: function(){
+    getProfile: function(store){
         return axios({
             method: 'GET',
-            url: requestService.getApiUrl()+ '/user',
+            url: requestService.getApiUrl(store)+ '/user',
             headers: requestService.getSessionHeaders(store)
         });
     },
-    profile: function(){
+    profile: function(store){
         return function (dispatch) {
             dispatch({type: types.PROFILE_REQUEST});
-            return actions.getProfile()
+            return actions.getProfile(store)
                 .then((response) => {
                     dispatch({
                         type: types.PROFILE_SUCCESS,
@@ -112,12 +111,12 @@ export const actions = {
                 });
         };
     },
-    login: function(email, password){
+    login: function(store, email, password){
         return function (dispatch) {
             dispatch({type:types.LOGIN_REQUEST});
             return axios({
                 method: 'POST',
-                url: requestService.getApiUrl()+'/user/login',
+                url: requestService.getApiUrl(store)+'/user/login',
                 data: {
                     email: email,
                     password: password
@@ -129,7 +128,7 @@ export const actions = {
                         type: types.LOGIN_SUCCESS,
                         sessionToken: sessionToken
                     });
-                    return store.dispatch(actions.profile());
+                    return store.dispatch(actions.profile(store));
                 })
                 .catch((error) => {
                     dispatch({
@@ -144,12 +143,12 @@ export const actions = {
             dispatch({type: types.LOGOUT});
         };
     },
-    forgotPasswordRequest: function(email){
+    forgotPasswordRequest: function(store, email){
         return function (dispatch) {
             dispatch({type: types.FORGOT_PASSWORD_REQUEST});
             return axios({
                 method: 'POST',
-                url: requestService.getApiUrl()+ '/user/forgot-password',
+                url: requestService.getApiUrl(store)+ '/user/forgot-password',
                 data: {
                     email: email
                 }
@@ -173,12 +172,12 @@ export const actions = {
             dispatch({type: types.RESET_RESPONSE});
         }
     },
-    register: function(firstName, lastName, email, password){
+    register: function(store, firstName, lastName, email, password){
         return function (dispatch) {
             dispatch({type:types.REGISTER_REQUEST});
             return axios({
                 method: 'PUT',
-                url: requestService.getApiUrl()+'/user',
+                url: requestService.getApiUrl(store)+'/user',
                 data: {
                     firstName: firstName,
                     lastName: lastName,
@@ -192,7 +191,7 @@ export const actions = {
                         type: types.REGISTER_SUCCESS,
                         sessionToken: sessionToken
                     });
-                    return store.dispatch(actions.profile());
+                    return store.dispatch(actions.profile(store));
                 })
                 .catch((error) => {
                     dispatch({
@@ -202,12 +201,12 @@ export const actions = {
                 });
         };
     },
-    update: function(firstName, lastName, password){
+    update: function(store, firstName, lastName, password){
         return function (dispatch) {
             dispatch({type:types.UPDATE_REQUEST});
             return axios({
                 method: 'POST',
-                url: requestService.getApiUrl()+'/user',
+                url: requestService.getApiUrl(store)+'/user',
                 headers: requestService.getSessionHeaders(store),
                 data: {
                     firstName: firstName,
