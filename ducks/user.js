@@ -177,7 +177,7 @@ export const actions = {
             dispatch({type:types.REGISTER_REQUEST});
             return axios({
                 method: 'PUT',
-                url: requestService.getApiUrl(store)+'/user',
+                url: requestService.getApiUrl(store)+'/user/register',
                 data: {
                     firstName: firstName,
                     lastName: lastName,
