@@ -24,7 +24,7 @@ const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.g
     },
     store = compose(
         applyMiddleware(thunk, createLogger()),
-        // autoRehydrate()
+        autoRehydrate()
     )(createStore)(combineReducers(_.assign(reducersBootstrapper,{nav: navReducer})));
 
 persistStore(store, {storage: AsyncStorage}, () => {
