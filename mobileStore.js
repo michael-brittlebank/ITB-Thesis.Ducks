@@ -14,42 +14,16 @@ import { actions as userActions } from './ducks/user';
 import requestService from './services/request';
 import { actions as configActions} from './ducks/config';
 
-//views
-import Login from '../../src/components/login/loginContainer';
-import Dashboard from '../../src/components/dashboard/dashboardContainer';
-import Register from '../../src/components/register/registerContainer';
+import AppNavigator from '../../router';
 
-const AppNavigator = StackNavigator({
-    Login: {
-        screen: Login,
-        navigationOptions: ({navigation}) => ({
-            title: 'Login',
-        })
-    },
-    Dashboard: {
-        screen: Dashboard,
-        navigationOptions: ({navigation}) => ({
-            title: 'Dashboard',
-        })
-    },
-    Register: {
-        screen: Register,
-        navigationOptions: ({navigation}) => ({
-            title: 'Register',
-        })
-    }
-});
-
-const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Login'));
-
-const navReducer = (state = initialState, action) => {
+const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Login')),
+    navReducer = (state = initialState, action) => {
         const nextState = AppNavigator.router.getStateForAction(action, state);
         // Simply return the original `state` if `nextState` is null or undefined.
         return nextState || state;
     },
-    middleware = applyMiddleware(thunk, createLogger()),
     store = compose(
-        middleware,
+        applyMiddleware(thunk, createLogger()),
         autoRehydrate()
     )(createStore)(combineReducers(_.assign(reducersBootstrapper,{nav: navReducer})));
 
