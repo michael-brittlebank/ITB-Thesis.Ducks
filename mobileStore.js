@@ -16,11 +16,28 @@ import { actions as configActions} from './ducks/config';
 
 //views
 import Login from '../../src/components/login/loginContainer';
-import Dashboard from '../../src/components/dashboard/dashboard';
+import Dashboard from '../../src/components/dashboard/dashboardContainer';
+import Register from '../../src/components/register/registerContainer';
 
 const AppNavigator = StackNavigator({
-    Login: { screen: Login },
-    Dashboard: { screen: Dashboard },
+    Login: {
+        screen: Login,
+        navigationOptions: ({navigation}) => ({
+            title: 'Login',
+        })
+    },
+    Dashboard: {
+        screen: Dashboard,
+        navigationOptions: ({navigation}) => ({
+            title: 'Dashboard',
+        })
+    },
+    Register: {
+        screen: Register,
+        navigationOptions: ({navigation}) => ({
+            title: 'Register',
+        })
+    }
 });
 
 const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams('Login'));
